@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dither Studio - Professional Image Dithering Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1 class="app-title">Dither Studio</h1>
+            <div class="header-actions">
+                <button class="btn btn--outline btn--sm" id="clearBtn" disabled>Clear Image</button>
+                <button class="btn btn--primary btn--sm" id="downloadBtn" disabled>Download</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Controls Sidebar -->
+            <aside class="controls-sidebar">
+                <div class="control-section">
+                    <h3>Algorithm</h3>
+                    <select class="form-control" id="algorithmSelect">
+                        <option value="floyd-steinberg">Floyd-Steinberg</option>
+                        <option value="bayer">Bayer Matrix</option>
+                        <option value="halftone">Halftone Dots</option>
+                        <option value="retro">Retro Pixel</option>
+                        <option value="ascii">ASCII Art</option>
+                        <option value="threshold">Threshold</option>
+                        <option value="random">Random Noise</option>
+                    </select>
+                </div>
+
+                <div class="control-section">
+                    <h3>Color Settings</h3>
+                    <div class="form-group">
+                        <label class="form-label">Colors: <span id="colorCountValue">16</span></label>
+                        <input type="range" class="slider" id="colorCount" min="2" max="256" value="16">
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="grayscaleToggle">
+                            <span class="checkbox-custom"></span>
+                            Grayscale Only
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>Adjustments</h3>
+                    <div class="form-group">
+                        <label class="form-label">Brightness: <span id="brightnessValue">0</span></label>
+                        <input type="range" class="slider" id="brightness" min="-100" max="100" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Gamma: <span id="gammaValue">1.0</span></label>
+                        <input type="range" class="slider" id="gamma" min="0.1" max="3.0" step="0.1" value="1.0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contrast: <span id="contrastValue">0</span></label>
+                        <input type="range" class="slider" id="contrast" min="-100" max="100" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Threshold: <span id="thresholdValue">128</span></label>
+                        <input type="range" class="slider" id="threshold" min="0" max="255" value="128">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Dither Scale: <span id="ditherScaleValue">1.0</span></label>
+                        <input type="range" class="slider" id="ditherScale" min="0.5" max="3.0" step="0.1" value="1.0">
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>Export</h3>
+                    <div class="form-group">
+                        <label class="form-label">Format</label>
+                        <select class="form-control" id="exportFormat">
+                            <option value="png">PNG (Lossless)</option>
+                            <option value="jpg">JPG (Compressed)</option>
+                        </select>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Preview Area -->
+            <section class="preview-area">
+                <!-- Upload Zone -->
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-content">
+                        <div class="upload-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17,8 12,3 7,8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                        <h3>Drop an image here or click to browse</h3>
+                        <p class="upload-hint">Supports PNG, JPG, JPEG, GIF up to 10MB</p>
+                        <button class="btn btn--primary">Choose File</button>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+
+                <!-- Canvas Container -->
+                <div class="canvas-container" id="canvasContainer" style="display: none;">
+                    <div class="canvas-toolbar">
+                        <div class="canvas-controls">
+                            <button class="btn btn--sm btn--outline" id="zoomFit">Fit to Screen</button>
+                            <button class="btn btn--sm btn--outline" id="zoom100">100%</button>
+                            <button class="btn btn--sm btn--outline" id="toggleComparison">Compare</button>
+                        </div>
+                        <div class="image-info">
+                            <span id="imageInfo">No image loaded</span>
+                        </div>
+                    </div>
+                    
+                    <div class="canvas-wrapper">
+                        <canvas id="originalCanvas" style="display: none;"></canvas>
+                        <canvas id="previewCanvas"></canvas>
+                        <div class="processing-overlay" id="processingOverlay" style="display: none;">
+                            <div class="processing-spinner"></div>
+                            <span>Processing...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Status Bar -->
+        <footer class="status-bar">
+            <div class="status-left">
+                <span id="statusText">Ready to dither images</span>
+            </div>
+            <div class="status-right">
+                <span id="processingTime"></span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
